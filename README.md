@@ -1,6 +1,6 @@
 #### Erlang Google OAuth 2.0 API client to generate API token for Google S2S requests
 
-This projects is optimized for rebar3. You can go to original project by clicking (this link)[https://github.com/pankajsoni19/google_oauth_erlang].
+This projects is optimized for rebar3. You can go to original project by clicking [this link](https://github.com/pankajsoni19/google_oauth_erlang).
 
 ### How to compile:
 
