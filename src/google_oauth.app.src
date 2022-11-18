@@ -1,0 +1,8 @@
+{application, google_oauth,
+ [{description, "@PACKAGE_NAME@"},
+  {vsn, "@PACKAGE_VERSION@"},
+  {modules, []},
+  {registered, []},
+  {applications, [kernel, stdlib]},
+  {env, []},
+  {mod, {google_oauth_app, []}}]}.
