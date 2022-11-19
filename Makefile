@@ -1,17 +1,21 @@
-PROJECT = google_oauth
-PROJECT_VERSION = $(shell head -n 1 relx.config | awk '{split($$0, a, "\""); print a[2]}')
+.PHONY: all compile deps clean distclean test check_plt build_plt dialyzer \
+	    cleanplt
 
-# app:: rebar.config
-LOCAL_DEPS = inets crypto public_key ssl
+all: deps compile
 
-DEPS = lager jsx base64url
+compile: deps
+	./rebar compile
 
-dep_lager = git https://github.com/erlang-lager/lager 3.8.0
-dep_jsx = git https://github.com/talentdeficit/jsx.git v2.10.0
-dep_base64url = git https://github.com/dvv/base64url.git 1.0.1
+deps:
+	test -d deps || ./rebar get-deps
 
-include erlang.mk
+clean:
+	./rebar clean
 
-ERLC_COMPILE_OPTS= +'{parse_transform, lager_transform}'
-ERLC_OPTS += $(ERLC_COMPILE_OPTS)
-TEST_ERLC_OPTS += $(ERLC_COMPILE_OPTS)
+distclean: clean
+	./rebar delete-deps
+
+DIALYZER_APPS = kernel stdlib erts sasl eunit syntax_tools compiler crypto \
+				common_test
+
+include tools.mk
