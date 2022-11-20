@@ -3,6 +3,6 @@
   {vsn, "@PACKAGE_VERSION@"},
   {modules, []},
   {registered, []},
-  {applications, [kernel, stdlib]},
+  {applications, [kernel, stdlib, crypto, asn1, public_key, ssl, inets, base64url]},
   {env, []},
   {mod, {google_oauth_app, []}}]}.
