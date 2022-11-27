@@ -2,6 +2,10 @@
 
 -export([get_access_token/2]).
 
+-include("logger.hrl").
+-include("translate.hrl").
+
+
 -define(GRANT_TYPE, <<"&grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer">>).
 -define(REQ_OPTS, [{full_result, false}, {body_format, binary}]).
 -define(JSX_OPTS, [return_maps, {labels, atom}]).
@@ -19,9 +23,15 @@ validate_token(ServiceJson, JWTToken) ->
     Uri = get_uri(ServiceJson),
     Req = {Uri, [], "application/x-www-form-urlencoded", Body},
     case httpc:request(post, Req, [], ?REQ_OPTS) of
-        {ok, {200, Result}} -> {ok, jsx:decode(Result, ?JSX_OPTS)};
-        {ok, Reason} -> {error, Reason};
-        {error, _} = Error -> Error
+        {ok, {200, Result}} -> 
+?INFO_MSG("mod_push httpc result 200: ~p", [Result]),
+{ok, jsx:decode(Result, ?JSX_OPTS)};
+        {ok, Reason} -> 
+?INFO_MSG("mod_push httpc result is not 200. reason: ~p", [Reason]),
+{error, Reason};
+        {error, _} = Error -> 
+?INFO_MSG("mod_push httpc resulted with error: ~p", [Error]),
+Error
     end.
 
 get_uri(#{token_uri  := TokenUri}) when is_binary(TokenUri) ->
